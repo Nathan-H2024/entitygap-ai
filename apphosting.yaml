@@ -6,20 +6,20 @@ runConfig:
 
 # Environment variables and secrets.
 env:
-  -variable: NEXT_PUBLIC_FIREBASE_API_KEY
-   value: AIzaSyDqUgFoTVuGuyJemYWhg2xGnojNBP82qyY
-  -variable: NEXT_PUBLIC_FIREBASE_AUTH_DOMAIN
-   value: entitygap-ai.firebaseapp.com
-  -variable: NEXT_PUBLIC_FIREBASE_PROJECT_ID
-   value: entitygap-ai
-  -variable: NEXT_PUBLIC_FIREBASE_STORAGE_BUCKET
-   value: entitygap-ai.firebasestorage.app
-  -variable: NEXT_PUBLIC_FIREBASE_MESSAGING_SENDER_ID
-   value: "592829622852"
-  -variable: NEXT_PUBLIC_FIREBASE_APP_ID
-   value: "1:592829622852:web:b9b222ed1cb8c6516c2a11"
-  -variable: NEXT_PUBLIC_FIREBASE_MEASUREMENT_ID 
-   value: G-X8BERZNVLY
+   -variable: NEXT_PUBLIC_FIREBASE_API_KEY
+    value: AIzaSyDqUgFoTVuGuyJemYWhg2xGnojNBP82qyY
+   -variable: NEXT_PUBLIC_FIREBASE_AUTH_DOMAIN
+    value: entitygap-ai.firebaseapp.com
+   -variable: NEXT_PUBLIC_FIREBASE_PROJECT_ID
+    value: entitygap-ai
+   -variable: NEXT_PUBLIC_FIREBASE_STORAGE_BUCKET
+    value: entitygap-ai.firebasestorage.app
+   -variable: NEXT_PUBLIC_FIREBASE_MESSAGING_SENDER_ID
+    value: "592829622852"
+   -variable: NEXT_PUBLIC_FIREBASE_APP_ID
+    value: "1:592829622852:web:b9b222ed1cb8c6516c2a11"
+   -variable: NEXT_PUBLIC_FIREBASE_MEASUREMENT_ID 
+    value: G-X8BERZNVLY
 
   # Grant access to secrets in Cloud Secret Manager.
   # See https://firebase.google.com/docs/app-hosting/configure#secret-parameters
