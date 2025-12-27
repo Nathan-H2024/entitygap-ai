@@ -11,6 +11,7 @@
     "caniuse-lite": "^1.0.30001761",
     "client-only": "^0.0.1",
     "detect-libc": "^2.1.2",
+    "firebase": "^12.7.0",
     "nanoid": "^3.3.11",
     "next": "^16.1.1",
     "picocolors": "^1.1.1",
