@@ -24,7 +24,7 @@ env:
   - variable: NEXT_PUBLIC_FIREBASE_MEASUREMENT_ID
     value: G-X8BERZNVLY
   - variable: NEXT_PUBLIC_GEMINI_API_KEY
-    secret: GEMINI_API_KEY    
+    secret: Gemini_api_key    
 
   # Grant access to secrets in Cloud Secret Manager.
   # See https://firebase.google.com/docs/app-hosting/configure#secret-parameters
