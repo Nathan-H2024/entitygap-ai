@@ -1,0 +1,5 @@
+{
+  "name": "EntityGap AI",
+  "description": "A SaaS platform using Gemini to identify emerging market trends before they saturate. Features the GapScan™ engine for strict data verification.",
+  "requestFramePermissions": []
+}
