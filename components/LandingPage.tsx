@@ -129,9 +129,9 @@ const LandingPage: React.FC<LandingPageProps> = ({ onStart }) => {
                    </ul>
                 </div>
                 <div className="bg-neutral-900 rounded-xl border border-white/10 p-6 font-mono text-xs text-green-400 shadow-inner">
-                   <div className="mb-2 opacity-50 border-b border-white/10 pb-2">TERMINAL OUTPUT >></div>
+                   <div className="mb-2 opacity-50 border-b border-white/10 pb-2"><div>TERMINAL OUTPUT &gt;&gt;</div></div>
                    <div className="space-y-2">
-                      <p>> INITIATING SCAN: "Vertical Farming at Home"</p>
+                      <p>&gt;&gt; INITIATING SCAN: "Vertical Farming at Home"</p>
                       <p>> CHECKING SOURCES... <span className="text-brand-gold">REDDIT (FOUND)</span>, <span className="text-brand-gold">TIKTOK (FOUND)</span></p>
                       <p>> VELOCITY: <span className="text-white">HIGH (85%)</span></p>
                       <p>> SATURATION: <span className="text-red-500">MEDIUM-HIGH</span></p>
