@@ -60,12 +60,19 @@ const LandingPage: React.FC<LandingPageProps> = ({ onStart }) => {
            >
           Start Free Scan <ArrowRight className="w-5 h-5 ml-2" />
         </button>
-        <button 
-          onClick={() => window.open('https://entitygap-ai--entitygap-ai.us-central1.hosted.app/demo.webm', '_blank')}
-          className="px-8 py-4 bg-neutral-900 border border-neutral-700 hover:border-neutral-500 text-white font-bold rounded-full text-lg transition"
-        >
-          View Demo
-        </button>
+        <a 
+  <a 
+  href="/demo.webm" 
+  download="EntityGap_Demo.webm"
+  className="px-8 py-4 bg-neutral-900 border border-neutral-700 hover:border-neutral-500 text-white font-bold rounded-full text-lg transition inline-flex items-center justify-center"
+>
+  Download & View Demo
+</a> 
+  target="_blank" 
+  className="inline-block px-8 py-4 bg-neutral-900 border border-neutral-700 hover:border-neutral-500 text-white font-bold rounded-full text-lg transition text-center"
+>
+  View Demo
+</a>
           </div>
         </div>
       </section>
