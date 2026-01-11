@@ -19,16 +19,16 @@ const analysisSchema: Schema = {
     confidenceScore: { type: Type.NUMBER, description: "Confidence score (0-100)." },
     marketVolume: { type: Type.STRING, description: "e.g. '12k searches/mo'" },
     competitionLevel: { type: Type.STRING, enum: ['Low', 'Medium', 'High'] },
-    velocity: { type: Type.STRING, description: "Trend velocity analysis." },
+    velocity: { type: Type.STRING, description: "Trend velocity analysis. Double check found information." },
     saturation: { type: Type.STRING, description: "Market saturation (e.g. Blue Ocean, Crowded)." },
     unmetNeed: { type: Type.STRING, description: "Specific complaint or gap in the market." },
     discoveryDate: { type: Type.STRING, description: "Current date." },
     
-    // Niche Pollinations (Suggestions)
+    // Niche Pollinations (Suggestions) - NOW MANDATORY
     nichePollinations: { 
       type: Type.ARRAY, 
       items: { type: Type.STRING }, 
-      description: "List of specific sub-niche angles or adjacent opportunities." 
+      description: "List of specific sub-niche angles or adjacent opportunities. Must not be empty." 
     },
 
     // Architect Fields
@@ -82,7 +82,8 @@ const analysisSchema: Schema = {
       }
     }
   },
-  required: ["entityName", "safetyViolation", "isHallucinationRisk", "positioningAngle", "authorityScore", "marketVolume", "competitionLevel"]
+  // ADDED nichePollinations, velocity, unmetNeed to REQUIRED to force generation
+  required: ["entityName", "safetyViolation", "isHallucinationRisk", "positioningAngle", "authorityScore", "marketVolume", "competitionLevel", "nichePollinations", "velocity", "unmetNeed"]
 };
 
 // Helper to get formatted dates for the prompt
@@ -99,64 +100,71 @@ const getDateContext = () => {
 
 // Robust JSON Cleaner
 const cleanAndParseJSON = (text: string): EntityGapAnalysis => {
-  // Pre-cleaning: 
-  // 1. Fix known repetition bugs (e.g., ").2026).2026").
-  let cleaned = text.replace(/(\)\.\d{4}){2,}/g, ').');
+  // 1. Remove Markdown code blocks if present (e.g., ```json ... ```)
+  // We prefer the content inside the block.
+  let cleaned = text;
+  const markdownMatch = text.match(/```json\s*([\s\S]*?)\s*```/);
+  if (markdownMatch) {
+    cleaned = markdownMatch[1];
+  } else {
+    // Fallback: Remove any code block markers if regex didn't match perfectly
+    cleaned = cleaned.replace(/```json\s*/g, '').replace(/```/g, '');
+  }
 
-  // 2. Fix the specific " / . / ." loop seen in Gemini 2.5/3 models.
-  // This regex looks for repeated sequences of slashes, dots, and spaces at the end of the string.
-  cleaned = cleaned.replace(/(\s*\/[\s\.]*)+$/g, '');
+  // 2. Fix known model glitches
+  cleaned = cleaned.replace(/(\)\.\d{4}){2,}/g, ').'); // Repetitive date/version artifacts
+  cleaned = cleaned.replace(/(\s*\/[\s\.]*)+$/g, ''); // Trailing slashes loops
 
-  // 3. Remove Markdown code blocks if present
-  cleaned = cleaned.replace(/```json\s*/g, '').replace(/```/g, '').trim();
+  // 3. Locate JSON boundaries
+  const firstBrace = cleaned.indexOf('{');
+  const lastBrace = cleaned.lastIndexOf('}');
+  
+  if (firstBrace !== -1 && lastBrace !== -1) {
+    cleaned = cleaned.substring(firstBrace, lastBrace + 1);
+  } else if (firstBrace !== -1) {
+    // Truncated Case: Start from the first brace
+    cleaned = cleaned.substring(firstBrace);
+  }
 
   try {
-    // 4. Extract JSON object via brace matching
-    const firstBrace = cleaned.indexOf('{');
-    const lastBrace = cleaned.lastIndexOf('}');
-    
-    if (firstBrace !== -1 && lastBrace !== -1) {
-      cleaned = cleaned.substring(firstBrace, lastBrace + 1);
-    }
-    
-    // 5. Attempt to parse
     return JSON.parse(cleaned);
-
   } catch (e) {
-    // Fallback strategy for unescaped characters or truncation
+    // 4. Advanced Repair for Truncated JSON
+    console.warn("JSON Parse Failed, attempting repair...", e);
+    
     try {
-        // Flatten text to handle unescaped newlines in strings
-        const flattened = cleaned.replace(/[\r\n\t]+/g, ' ');
-        
-        // Re-attempt extraction
-        const firstBrace = flattened.indexOf('{');
-        const lastBrace = flattened.lastIndexOf('}');
-        if (firstBrace !== -1 && lastBrace !== -1) {
-             const finalClean = flattened.substring(firstBrace, lastBrace + 1);
-             return JSON.parse(finalClean);
-        }
-        
-        // If no closing brace found (truncated), try finding the last valid comma-separated property
-        if (firstBrace !== -1) {
-            // "Hail Mary": Assume the string was cut off inside a value. 
-            // Try to close the JSON manually.
-            let truncated = flattened.substring(firstBrace);
-            // Remove the last partial string if it doesn't end with a quote
-            if (!truncated.endsWith('"') && !truncated.endsWith('}')) {
-                // Find the last quote
-                const lastQuote = truncated.lastIndexOf('"');
-                if (lastQuote > 0) {
-                     // Close the string and object
-                     return JSON.parse(truncated.substring(0, lastQuote) + '"}');
-                }
-            }
-        }
-        
-        throw e;
+      // Flatten text to handle unescaped newlines in strings for easier regex processing
+      let flat = cleaned.replace(/[\r\n\t]+/g, ' ');
+
+      // Common truncation: cut off inside a string
+      // e.g., "description": "some text...
+      if (!flat.endsWith('}') && !flat.endsWith(']')) {
+         // Check if we are inside a quote
+         const quoteCount = (flat.match(/"/g) || []).length;
+         if (quoteCount % 2 !== 0) {
+             // We are inside an open string. Close it.
+             flat += '"';
+         }
+         
+         // Now try to close objects/arrays. 
+         // A simple heuristic: count open braces/brackets and add missing closing ones.
+         // This is imperfect but works for simple tail truncation.
+         const openCurly = (flat.match(/\{/g) || []).length;
+         const closeCurly = (flat.match(/\}/g) || []).length;
+         const openSquare = (flat.match(/\[/g) || []).length;
+         const closeSquare = (flat.match(/\]/g) || []).length;
+
+         for (let i = 0; i < (openSquare - closeSquare); i++) flat += ']';
+         for (let i = 0; i < (openCurly - closeCurly); i++) flat += '}';
+         
+         return JSON.parse(flat);
+      }
+      
+      throw e;
     } catch (finalError) {
-        console.error("Critical JSON Parse Error:", finalError);
-        console.error("Raw Text causing error:", text);
-        throw new Error("Failed to parse AI response. The model generated invalid JSON.");
+      console.error("Critical JSON Parse Error:", finalError);
+      console.error("Raw Text causing error:", text);
+      throw new Error("Failed to parse AI response. The model generated invalid JSON.");
     }
   }
 };
@@ -175,53 +183,54 @@ export const analyzeNiche = async (niche: string, tier: UserTier): Promise<Entit
   if (tier === UserTier.SCOUT) pollinationCount = 3;
   if (isArchitectOrHigher) pollinationCount = 5; // Batches of 5
 
-  const promptContext = `Perform a strict "GapScan Audit" on: "${niche}". 
+  const promptContext = `
+      ROLE: You are the "GapScan Auditor" (EntityGap AI).
+      TASK: Perform a strict "GapScan Audit" on: "${niche}".
       
-      User Subscription Tier: ${tier}. 
+      USER TIER: ${tier}
+      REQUIRED POLLINATIONS: ${pollinationCount} (You MUST generate exactly this many).
       
       CONTEXT:
       - Today: ${current}
       - Cutoff: ${cutoff} (Trends older than this are Saturated)
 
-      GATES:
-      1. Legal/Safety (Block if illegal/harmful).
-      2. Verification (Must have 2+ recent sources).
-      3. COMPETITION & GAP LOGIC:
-         - Perform Google Search for "${niche}".
-         - Assess Competition Level.
-         - MANDATORY: Generate exactly ${pollinationCount} 'nichePollinations' (Alternative Gaps) regardless of competition level.
-           > If Competition is HIGH/SATURATED: Find specific low-competition sub-niches or pivots.
-           > If Competition is LOW/BLUE OCEAN: Find specific expansion opportunities or monetization angles.
+      SCOUT ENGINE LOGIC (Follow sequentially):
+      1. [LEGAL GATE] Block if illegal/harmful (set safetyViolation=true).
+      2. [VERIFICATION] Search for "${niche}". Verify 2+ sources. If fake/nonsense, set isHallucinationRisk=true.
+      3. [VELOCITY CHECK] Double check found information. Is this trending UP or DOWN? Concisely explain in 'velocity'.
+      4. [SATURATION] Determine if this is "Blue Ocean" (New) or "Red Ocean" (Crowded).
+      5. [UNMET NEEDS] Identify the specific complaint or "Gap" in the market.
+      6. [POLLINATION] Suggest exactly ${pollinationCount} 'nichePollinations' (Alternative Gaps) based on your saturation finding:
+         - If Saturated: Suggest specific sub-niches or pivots.
+         - If Blue Ocean: Suggest specific expansion opportunities or monetization angles.
+         - NOTE: This field is MANDATORY for all queries.
 
-      OUTPUT REQUIREMENTS:
-      - Return STRICT JSON. No markdown.
-      - IMPORTANT: Ensure all newlines within string values are escaped (e.g. "\\n"). Do not output literal control characters.
-      - CRITICAL: Do not output repetitive filler characters like "/ . / ." or infinite loops. Terminate the JSON object properly.
+      OUTPUT INSTRUCTIONS (CRITICAL):
+      - You must output STRICT VALID JSON. 
+      - DO NOT output internal monologue.
+      - DO NOT wrap the output in markdown (no \`\`\`json tags).
+      - Just output the raw JSON string starting with { and ending with }.
+      - Keep text fields concise.
       
-      BASE FIELDS (For All Tiers):
+      BASE FIELDS (REQUIRED):
       - entityName, positioningAngle, marketVolume, saturation, unmetNeed.
       - authorityScore (0-100).
-      
-      formatting:
-      - velocity: Provide a detailed analysis (MAX 50 words). Write in PLAIN TEXT. Be extremely concise. Long outputs cause errors. Do not use markdown.
+      - velocity: Concise plain text analysis (max 40 words).
+      - nichePollinations: Array of exactly ${pollinationCount} strings.
 
-      TIER SPECIFIC GENERATION:
-      - Generate exactly ${pollinationCount} items for 'nichePollinations'.
+      ${isArchitectOrHigher ? `ARCHITECT TIER FIELDS:
+      - sentimentAnalysis: 3 frustrations, 3 desires.
+      - gapHeatmap: Data for TikTok, Reddit, Google.
+      - creativeLab.videoScript: 15s viral script.
+      - aiSeo.entityDefinition: A formal dictionary definition for SEO.
+      - prEngine.pitchTemplate: A 2-sentence media pitch.` : ''}
 
-      ${isArchitectOrHigher ? `ARCHITECT TIER FEATURES:
-      - Generate 'sentimentAnalysis': 3 current frustrations, 3 projected desires.
-      - Generate 'gapHeatmap': Data for TikTok, Reddit, Google.
-      - Generate 'creativeLab.videoScript': 15s viral script.
-      - Generate 'aiSeo.entityDefinition': A formal dictionary definition for SEO.
-      - Generate 'prEngine.pitchTemplate': A 2-sentence media pitch.` : ''}
-
-      ${isAuthority ? `AUTHORITY TIER FEATURES:
-      - Generate 'aiSeo.citationPrep': List of 3 high-authority domains to target.
-      - Generate 'prEngine.editorialWindow': Specific upcoming date range to pitch.` : ''}
+      ${isAuthority ? `AUTHORITY TIER FIELDS:
+      - aiSeo.citationPrep: List of 3 high-authority domains to target.
+      - prEngine.editorialWindow: Specific upcoming date range to pitch.` : ''}
 
       IMPORTANT:
-      - If a field is not requested for this tier, omit it or leave null.
-      - Keep text concise.
+      - 'nichePollinations' must NEVER be empty.
       - Do not hallucinate URLs.`;
 
   try {
@@ -234,8 +243,8 @@ export const analyzeNiche = async (niche: string, tier: UserTier): Promise<Entit
         tools: [{ googleSearch: {} }], // ENABLE GROUNDING
         responseMimeType: "application/json",
         responseSchema: analysisSchema,
-        thinkingConfig: { thinkingBudget: 1024 }, // Reduced thinking budget to reserve tokens for output
-        maxOutputTokens: 4000, // Reduced max output to prevent loops from consuming full context
+        thinkingConfig: { thinkingBudget: 1024 }, // Increased slightly for better logic flow
+        maxOutputTokens: 8192,
       }
     });
 
@@ -247,6 +256,8 @@ export const analyzeNiche = async (niche: string, tier: UserTier): Promise<Entit
     // Fallbacks
     if (!data.confidenceScore) data.confidenceScore = data.authorityScore || 0;
     if (!data.discoveryDate) data.discoveryDate = current;
+    // Ensure nichePollinations is an array even if the model fails (fallback)
+    if (!data.nichePollinations) data.nichePollinations = ["Analysis unavailable. Please retry scan."];
     
     return data;
     
@@ -254,10 +265,10 @@ export const analyzeNiche = async (niche: string, tier: UserTier): Promise<Entit
     console.error("Gemini Analysis Error:", error);
     // Return Error State
     return {
-      entityName: "Error",
+      entityName: "Analysis Error",
       safetyViolation: false,
       isHallucinationRisk: true,
-      statusMessage: "System Error or AI Timeout",
+      statusMessage: "System Error or AI Timeout. Please try again.",
       positioningAngle: "System Error",
       authorityScore: 0,
       confidenceScore: 0,
@@ -266,6 +277,7 @@ export const analyzeNiche = async (niche: string, tier: UserTier): Promise<Entit
       velocity: "Unknown",
       saturation: "Unknown",
       unmetNeed: "None",
+      nichePollinations: [],
       discoveryDate: current
     };
   }

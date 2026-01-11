@@ -1,12 +1,15 @@
 
-import React from 'react';
+import React, { useState } from 'react';
 import { ArrowRight, ShieldCheck, Zap, Globe, Lock, Activity, TrendingUp } from 'lucide-react';
+import DemoSlideshow from './DemoSlideshow';
 
 interface LandingPageProps {
   onStart: () => void;
 }
 
 const LandingPage: React.FC<LandingPageProps> = ({ onStart }) => {
+  const [showDemo, setShowDemo] = useState(false);
+
   return (
     <div className="min-h-screen bg-brand-dark text-slate-200 font-sans overflow-hidden">
       
@@ -57,8 +60,11 @@ const LandingPage: React.FC<LandingPageProps> = ({ onStart }) => {
             >
               Start Free Scan <ArrowRight className="w-5 h-5 ml-2" />
             </button>
-            <button className="px-8 py-4 bg-neutral-900 border border-neutral-700 hover:border-neutral-500 text-white font-bold rounded-full text-lg transition">
-              View Live Demo
+            <button 
+              onClick={() => setShowDemo(true)}
+              className="px-8 py-4 bg-neutral-900 border border-neutral-700 hover:border-neutral-500 text-white font-bold rounded-full text-lg transition"
+            >
+              View Demo
             </button>
           </div>
         </div>
@@ -129,13 +135,13 @@ const LandingPage: React.FC<LandingPageProps> = ({ onStart }) => {
                    </ul>
                 </div>
                 <div className="bg-neutral-900 rounded-xl border border-white/10 p-6 font-mono text-xs text-green-400 shadow-inner">
-                   <div className="mb-2 opacity-50 border-b border-white/10 pb-2"><div>TERMINAL OUTPUT &gt;&gt;</div></div>
+                   <div className="mb-2 opacity-50 border-b border-white/10 pb-2">TERMINAL OUTPUT >></div>
                    <div className="space-y-2">
-                      <p>&gt;&gt; INITIATING SCAN: "Vertical Farming at Home"</p>
-                      <p>&gt; CHECKING SOURCES... <span className="text-brand-gold">REDDIT (FOUND)</span>, <span className="text-brand-gold">TIKTOK (FOUND)</span></p>
-                      <p>&gt; VELOCITY: <span className="text-white">HIGH (85%)</span></p>
-                      <p>&gt; SATURATION: <span className="text-red-500">MEDIUM-HIGH</span></p>
-                      <p>&gt; DETECTED GAP: <span className="text-brand-purple">"Modular hydroponics for small apartments without direct sunlight."</span></p>
+                      <p>> INITIATING SCAN: "Vertical Farming at Home"</p>
+                      <p>> CHECKING SOURCES... <span className="text-brand-gold">REDDIT (FOUND)</span>, <span className="text-brand-gold">TIKTOK (FOUND)</span></p>
+                      <p>> VELOCITY: <span className="text-white">HIGH (85%)</span></p>
+                      <p>> SATURATION: <span className="text-red-500">MEDIUM-HIGH</span></p>
+                      <p>> DETECTED GAP: <span className="text-brand-purple">"Modular hydroponics for small apartments without direct sunlight."</span></p>
                       <p className="animate-pulse">_</p>
                    </div>
                 </div>
@@ -149,6 +155,17 @@ const LandingPage: React.FC<LandingPageProps> = ({ onStart }) => {
         <p>© {new Date().getFullYear()} EntityGap AI. All rights reserved.</p>
         <p className="mt-2 opacity-50">Powered by Gemini 1.5 Pro & Flash</p>
       </footer>
+
+      {/* Slideshow Modal */}
+      {showDemo && (
+        <DemoSlideshow 
+          onClose={() => setShowDemo(false)} 
+          onStartRealApp={() => {
+            setShowDemo(false);
+            onStart();
+          }}
+        />
+      )}
 
     </div>
   );

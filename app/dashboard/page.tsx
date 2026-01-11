@@ -24,7 +24,8 @@ export default function DashboardPage() {
   // --- App State ---
   const [query, setQuery] = useState('');
   const [credits, setCredits] = useState(5);
-  const [tier, setTier] = useState<UserTier>(UserTier.SCOUT);
+  // Changed default tier to DAILY_ALPHA to ensure Free Scan users are locked by default
+  const [tier, setTier] = useState<UserTier>(UserTier.DAILY_ALPHA);
   const [isAnalyzing, setIsAnalyzing] = useState(false);
   const [analysisResult, setAnalysisResult] = useState<EntityGapAnalysis | null>(null);
   const [logs, setLogs] = useState<LogEntry[]>([]);
