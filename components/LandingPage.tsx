@@ -63,11 +63,11 @@ const LandingPage: React.FC<LandingPageProps> = ({ onStart }) => {
           <a 
             href="/demo.webm" 
             target="_blank" 
-            rel="noopener noreferrer"
-            className="px-8 py-4 bg-neutral-900 border border-neutral-700 hover:border-neutral-500 text-white font-bold rounded-full text-lg transition inline-flex items-center justify-center"
-          >
-            View Live Demo
-          </a>
+            rel="noreferrer"
+            className="px-8 py-4 bg-neutral-900 border border-neutral-700 hover:border-neutral-500 text-white font-bold rounded-full text-lg transition inline-flex items-center justify-center cursor-pointer"
+            >
+              View Demo
+           </a>
         </div>
           <div className="bg-brand-card p-8 rounded-2xl border border-white/5 hover:border-brand-purple/50 transition duration-300 group">
             <div className="w-12 h-12 bg-brand-purple/20 rounded-lg flex items-center justify-center mb-6 group-hover:scale-110 transition">
