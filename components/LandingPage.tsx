@@ -60,14 +60,14 @@ const LandingPage: React.FC<LandingPageProps> = ({ onStart }) => {
            >
           Start Free Scan <ArrowRight className="w-5 h-5 ml-2" />
         </button>
-        <a 
-  <a 
+          <a 
   href="/demo.webm" 
-  download="EntityGap_Demo.webm"
+  target="_blank" 
+  rel="noopener noreferrer"
   className="px-8 py-4 bg-neutral-900 border border-neutral-700 hover:border-neutral-500 text-white font-bold rounded-full text-lg transition inline-flex items-center justify-center"
 >
-  Download & View Demo
-</a> 
+  View Demo
+</a>
   target="_blank" 
   className="inline-block px-8 py-4 bg-neutral-900 border border-neutral-700 hover:border-neutral-500 text-white font-bold rounded-full text-lg transition text-center"
 >
