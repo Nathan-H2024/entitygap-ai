@@ -57,15 +57,15 @@ const LandingPage: React.FC<LandingPageProps> = ({ onStart }) => {
             <button 
               onClick={onStart}
               className="px-8 py-4 bg-brand-gold hover:bg-yellow-400 text-black font-bold rounded-full text-lg shadow-[0_0_20px_rgba(251,191,36,0.4)] transition hover:scale-105 flex items-center"
-            >
-              Start Free Scan <ArrowRight className="w-5 h-5 ml-2" />
-            </button>
-            <button 
-              onClick={() => setShowDemo(true)}
-              className="px-8 py-4 bg-neutral-900 border border-neutral-700 hover:border-neutral-500 text-white font-bold rounded-full text-lg transition"
-            >
-              View Demo
-            </button>
+           >
+          Start Free Scan <ArrowRight className="w-5 h-5 ml-2" />
+        </button>
+        <button 
+          onClick={() => window.open('https://entitygap-ai--entitygap-ai.us-central1.hosted.app/demo.webm', '_blank')}
+          className="px-8 py-4 bg-neutral-900 border border-neutral-700 hover:border-neutral-500 text-white font-bold rounded-full text-lg transition"
+        >
+          View Demo
+        </button>
           </div>
         </div>
       </section>
