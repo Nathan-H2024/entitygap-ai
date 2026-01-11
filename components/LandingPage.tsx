@@ -54,33 +54,21 @@ const LandingPage: React.FC<LandingPageProps> = ({ onStart }) => {
           </p>
           
           <div className="flex flex-col md:flex-row items-center justify-center gap-4">
-            <button 
-              onClick={onStart}
-              className="px-8 py-4 bg-brand-gold hover:bg-yellow-400 text-black font-bold rounded-full text-lg shadow-[0_0_20px_rgba(251,191,36,0.4)] transition hover:scale-105 flex items-center"
-           >
-          Start Free Scan <ArrowRight className="w-5 h-5 ml-2" />
-        </button>
+          <button 
+            onClick={onStart}
+            className="px-8 py-4 bg-brand-gold hover:bg-yellow-400 text-black font-bold rounded-full text-lg shadow-[0_0_20px_rgba(251,191,36,0.4)] transition hover:scale-105 flex items-center"
+          >
+            Start Free Scan <ArrowRight className="w-5 h-5 ml-2" />
+          </button>
           <a 
-  href="/demo.webm" 
-  target="_blank" 
-  rel="noopener noreferrer"
-  className="px-8 py-4 bg-neutral-900 border border-neutral-700 hover:border-neutral-500 text-white font-bold rounded-full text-lg transition inline-flex items-center justify-center"
->
-  View Demo
-</a>
-  target="_blank" 
-  className="inline-block px-8 py-4 bg-neutral-900 border border-neutral-700 hover:border-neutral-500 text-white font-bold rounded-full text-lg transition text-center"
->
-  View Demo
-</a>
-          </div>
+            href="/demo.webm" 
+            target="_blank" 
+            rel="noopener noreferrer"
+            className="px-8 py-4 bg-neutral-900 border border-neutral-700 hover:border-neutral-500 text-white font-bold rounded-full text-lg transition inline-flex items-center justify-center"
+          >
+            View Live Demo
+          </a>
         </div>
-      </section>
-
-      {/* Feature Grid */}
-      <section className="py-20 px-6 bg-neutral-950/50">
-        <div className="max-w-6xl mx-auto grid grid-cols-1 md:grid-cols-3 gap-8">
-          
           <div className="bg-brand-card p-8 rounded-2xl border border-white/5 hover:border-brand-purple/50 transition duration-300 group">
             <div className="w-12 h-12 bg-brand-purple/20 rounded-lg flex items-center justify-center mb-6 group-hover:scale-110 transition">
               <ShieldCheck className="w-6 h-6 text-brand-purple" />
