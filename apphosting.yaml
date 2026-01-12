@@ -18,15 +18,21 @@ env:
     value: "592829622852"
   - variable: NEXT_PUBLIC_FIREBASE_APP_ID
     value: "1:592829622852:web:b9b222ed1cb8c6516c2a11"
-  - variable: NEXT_PUBLIC_FIREBASE_MEASUREMENT_ID 
+  - variable: NEXT_PUBLIC_FIREBASE_MEASUREMENT_ID
     value: G-X8BERZNVLY
-# ... existing variables ...
+  # ... existing variables ...
   - variable: NEXT_PUBLIC_FIREBASE_MEASUREMENT_ID
     value: G-X8BERZNVLY
   - variable: NEXT_PUBLIC_GEMINI_API_KEY
-    secret: Gemini_api_key    
-
+    secret: Gemini_api_key
+  - variable: STRIPE_GAP_API_KEY
+    secret: STRIPE_GAP_API_KEY
   # Grant access to secrets in Cloud Secret Manager.
   # See https://firebase.google.com/docs/app-hosting/configure#secret-parameters
   # - variable: MY_SECRET
   #   secret: mySecretRef
+env:
+  - variable: GAP_API_KEY
+    secret: STRIPE_GAP_API_KEY
+  - variable: GAP_APP_ID
+    secret: STRIPE_GAP_APP_ID

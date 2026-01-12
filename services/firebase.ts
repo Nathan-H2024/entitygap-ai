@@ -15,7 +15,7 @@ const env = (key: string) => {
 };
 
 // Configuration
-const apiKey = env("FIREBASE_API_KEY");
+const apiKey = env("GAP_API_KEY");
 const isConfigValid = apiKey && apiKey !== "AIzaSy_PLACEHOLDER_KEY";
 
 const firebaseConfig = {
@@ -24,7 +24,7 @@ const firebaseConfig = {
   projectId: env("FIREBASE_PROJECT_ID") || "placeholder-project",
   storageBucket: env("FIREBASE_STORAGE_BUCKET") || "placeholder.appspot.com",
   messagingSenderId: env("FIREBASE_MESSAGING_SENDER_ID") || "0000000000",
-  appId: env("FIREBASE_APP_ID") || "1:0000000000:web:placeholder",
+  appId: env("GAP_APP_ID") || "1:0000000000:web:placeholder",
   measurementId: env("FIREBASE_MEASUREMENT_ID")
 };
 
