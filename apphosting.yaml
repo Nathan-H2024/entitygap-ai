@@ -32,7 +32,7 @@ env:
   # - variable: MY_SECRET
   #   secret: mySecretRef
 env:
-  - variable: GAP_API_KEY
+  - variable: VITE_GAP_API_KEY
     secret: STRIPE_GAP_API_KEY
-  - variable: GAP_APP_ID
+  - variable: VITE_GAP_APP_ID
     secret: STRIPE_GAP_APP_ID
