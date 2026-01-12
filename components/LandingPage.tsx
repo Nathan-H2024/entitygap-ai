@@ -23,11 +23,12 @@ const LandingPage: React.FC<LandingPageProps> = ({ onStart }) => {
             </span>
           </div>
           <button 
-            onClick={onStart}
-            className="bg-neutral-800 hover:bg-neutral-700 text-white px-5 py-2 rounded-full text-sm font-bold transition border border-white/10"
-          >
-            Agent Login
-          </button>
+  onClick={onStart} // This now triggers the same flow as "Start Free Scan"
+  className="bg-brand-purple hover:bg-purple-600 text-white px-5 py-2 rounded-full text-sm font-bold transition shadow-[0_0_15px_rgba(139,92,246,0.3)]"
+>
+  Agent Login / Sign Up
+</button>
+
         </div>
       </nav>
 
