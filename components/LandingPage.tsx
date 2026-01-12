@@ -1,25 +1,23 @@
-
-import React, { useState } from 'react';
+import React from 'react';
 import { ArrowRight, ShieldCheck, Zap, Globe, Lock, Activity, TrendingUp } from 'lucide-react';
-import DemoSlideshow from './DemoSlideshow';
 
 interface LandingPageProps {
   onStart: () => void;
 }
 
 const LandingPage: React.FC<LandingPageProps> = ({ onStart }) => {
-  const [showDemo, setShowDemo] = useState(false);
-
   return (
     <div className="min-h-screen bg-brand-dark text-slate-200 font-sans overflow-hidden">
       
       {/* Navbar */}
       <nav className="fixed w-full z-50 bg-black/50 backdrop-blur-lg border-b border-white/5">
         <div className="max-w-7xl mx-auto px-6 h-16 flex items-center justify-between">
-          <div className="flex items-center space-x-2">
-            <div className="w-8 h-8 rounded-full bg-brand-gradient flex items-center justify-center shadow-[0_0_15px_rgba(139,92,246,0.5)]">
-               <Zap className="w-5 h-5 text-white fill-white" />
-            </div>
+          <div className="flex items-center gap-3">
+            <img 
+              src="/entitygap-logo.png" 
+              alt="EntityGap AI Logo" 
+              className="h-8 w-auto" 
+            />
             <span className="text-lg font-bold tracking-tight">
               <span className="text-brand-purple">EntityGap</span> <span className="text-brand-gold">AI</span>
             </span>
@@ -53,44 +51,47 @@ const LandingPage: React.FC<LandingPageProps> = ({ onStart }) => {
             The world's first rigorous "Pre-Trend" auditing engine. We don't just find trends; we verify the <strong>Entity Gap</strong>—the specific unmet need in a saturated market.
           </p>
           
-          <div className="flex justify-center">
-          <button 
-            onClick={onStart}
-            className="px-8 py-4 bg-brand-gold hover:bg-yellow-400 text-black font-bold rounded-full text-lg shadow-[0_0_20px_rgba(251,191,36,0.4)] transition hover:scale-105 flex items-center"
-          >
-            Start Free Scan <ArrowRight className="w-5 h-5 ml-2" />
-          </button>
-        </div>
-          <div className="bg-brand-card p-8 rounded-2xl border border-white/5 hover:border-brand-purple/50 transition duration-300 group">
-            <div className="w-12 h-12 bg-brand-purple/20 rounded-lg flex items-center justify-center mb-6 group-hover:scale-110 transition">
-              <ShieldCheck className="w-6 h-6 text-brand-purple" />
-            </div>
-            <h3 className="text-xl font-bold text-white mb-3">Strict Verification</h3>
-            <p className="text-slate-400 leading-relaxed">
-              Our "Skeptical Scout" AI refuses to hallucinate. If a trend isn't verified by 2+ live data sources, we mark it as a risk.
-            </p>
+          <div className="flex justify-center mb-20">
+            <button 
+              onClick={onStart}
+              className="px-10 py-5 bg-brand-gold hover:bg-yellow-400 text-black font-bold rounded-full text-lg shadow-[0_0_20px_rgba(251,191,36,0.4)] transition hover:scale-105 flex items-center"
+            >
+              Start Free Scan <ArrowRight className="w-5 h-5 ml-2" />
+            </button>
           </div>
 
-          <div className="bg-brand-card p-8 rounded-2xl border border-white/5 hover:border-brand-gold/50 transition duration-300 group">
-            <div className="w-12 h-12 bg-brand-gold/20 rounded-lg flex items-center justify-center mb-6 group-hover:scale-110 transition">
-              <Activity className="w-6 h-6 text-brand-gold" />
+          {/* Feature Grid */}
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-8 text-left">
+            <div className="bg-brand-card p-8 rounded-2xl border border-white/5 hover:border-brand-purple/50 transition duration-300 group">
+              <div className="w-12 h-12 bg-brand-purple/20 rounded-lg flex items-center justify-center mb-6 group-hover:scale-110 transition">
+                <ShieldCheck className="w-6 h-6 text-brand-purple" />
+              </div>
+              <h3 className="text-xl font-bold text-white mb-3">Strict Verification</h3>
+              <p className="text-slate-400 leading-relaxed">
+                Our "Skeptical Scout" AI refuses to hallucinate. If a trend isn't verified by 2+ live data sources, we mark it as a risk.
+              </p>
             </div>
-            <h3 className="text-xl font-bold text-white mb-3">Velocity & Saturation</h3>
-            <p className="text-slate-400 leading-relaxed">
-              Don't enter a dead market. Our Saturation Meter tells you if a niche is a "Blue Ocean" or a "Red Ocean" instantly.
-            </p>
-          </div>
 
-          <div className="bg-brand-card p-8 rounded-2xl border border-white/5 hover:border-blue-500/50 transition duration-300 group">
-            <div className="w-12 h-12 bg-blue-500/20 rounded-lg flex items-center justify-center mb-6 group-hover:scale-110 transition">
-              <TrendingUp className="w-6 h-6 text-blue-400" />
+            <div className="bg-brand-card p-8 rounded-2xl border border-white/5 hover:border-brand-gold/50 transition duration-300 group">
+              <div className="w-12 h-12 bg-brand-gold/20 rounded-lg flex items-center justify-center mb-6 group-hover:scale-110 transition">
+                <Activity className="w-6 h-6 text-brand-gold" />
+              </div>
+              <h3 className="text-xl font-bold text-white mb-3">Velocity & Saturation</h3>
+              <p className="text-slate-400 leading-relaxed">
+                Don't enter a dead market. Our Saturation Meter tells you if a niche is a "Blue Ocean" or a "Red Ocean" instantly.
+              </p>
             </div>
-            <h3 className="text-xl font-bold text-white mb-3">Niche Pollination</h3>
-            <p className="text-slate-400 leading-relaxed">
-              If a market is crowded, our engine suggests 5 adjacent "Pollination" gaps where you can pivot and dominate.
-            </p>
-          </div>
 
+            <div className="bg-brand-card p-8 rounded-2xl border border-white/5 hover:border-blue-500/50 transition duration-300 group">
+              <div className="w-12 h-12 bg-blue-500/20 rounded-lg flex items-center justify-center mb-6 group-hover:scale-110 transition">
+                <TrendingUp className="w-6 h-6 text-blue-400" />
+              </div>
+              <h3 className="text-xl font-bold text-white mb-3">Niche Pollination</h3>
+              <p className="text-slate-400 leading-relaxed">
+                If a market is crowded, our engine suggests 5 adjacent "Pollination" gaps where you can pivot and dominate.
+              </p>
+            </div>
+          </div>
         </div>
       </section>
 
@@ -142,18 +143,6 @@ const LandingPage: React.FC<LandingPageProps> = ({ onStart }) => {
         <p>© {new Date().getFullYear()} EntityGap AI. All rights reserved.</p>
         <p className="mt-2 opacity-50">Powered by Gemini 1.5 Pro & Flash</p>
       </footer>
-
-      {/* Slideshow Modal */}
-      {showDemo && (
-        <DemoSlideshow 
-          onClose={() => setShowDemo(false)} 
-          onStartRealApp={() => {
-            setShowDemo(false);
-            onStart();
-          }}
-        />
-      )}
-
     </div>
   );
 };
