@@ -52,14 +52,16 @@ const LandingPage: React.FC<LandingPageProps> = ({ onStart }) => {
             The world's first rigorous "Pre-Trend" auditing engine. We don't just find trends; we verify the <strong>Entity Gap</strong>—the specific unmet need in a saturated market.
           </p>
           
-          <div className="flex justify-center mb-20">
-            <button 
-              onClick={onStart}
-              className="px-10 py-5 bg-brand-gold hover:bg-yellow-400 text-black font-bold rounded-full text-lg shadow-[0_0_20px_rgba(251,191,36,0.4)] transition hover:scale-105 flex items-center"
-            >
-              Start Free Scan <ArrowRight className="w-5 h-5 ml-2" />
-            </button>
-          </div>
+          <div className="w-full max-w-6xl mx-auto py-12 px-4" id="pricing-section">
+  <h2 className="text-3xl font-bold text-white text-center mb-8">Choose Your Scan Power</h2>
+  
+  {/* The Stripe Pricing Table */}
+  <stripe-pricing-table 
+    pricing-table-id="prctbl_1SovtlDFnQqtDdboAJl5fWDf"
+    publishable-key="pk_live_51QSfBBDFnQqtDdboD4o6sWj0J1ZpbBHqGZMacOmShhjscUTDJdj7GEcEJO2dBJ2159xonmDUdH0hxtOODT7lSapS00i5VMQooP"
+  >
+  </stripe-pricing-table>
+</div>
 
           {/* Feature Grid */}
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8 text-left">

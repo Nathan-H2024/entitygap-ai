@@ -6,7 +6,7 @@ import {
   signInWithPopup, 
   GoogleAuthProvider 
 } from 'firebase/auth';
-import { ShieldCheck, Mail, Lock, Chrome, ArrowLeft } from 'lucide-react';
+import { ShieldCheck, Mail, Lock, Chrome, ArrowLeft, Eye, EyeOff } from 'lucide-react';
 
 interface LoginPageProps {
   onLogin: (user: any) => void;
@@ -18,6 +18,7 @@ const LoginPage: React.FC<LoginPageProps> = ({ onLogin, onBackToLanding }) => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
+  const [showPassword, setShowPassword] = useState(false);
 
   const handleAuth = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -85,19 +86,26 @@ const LoginPage: React.FC<LoginPageProps> = ({ onLogin, onBackToLanding }) => {
             </div>
 
             <div className="space-y-1">
-              <label className="text-xs font-bold text-slate-500 uppercase ml-1">Password</label>
-              <div className="relative">
-                <Lock className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-500" />
-                <input 
-                  type="password" 
-                  value={password}
-                  onChange={(e) => setPassword(e.target.value)}
-                  className="w-full bg-black/40 border border-white/10 rounded-xl py-3 pl-12 pr-4 text-white focus:border-brand-purple transition outline-none"
-                  placeholder="••••••••"
-                  required
-                />
-              </div>
-            </div>
+  <label className="text-xs font-bold text-slate-500 uppercase ml-1">Password</label>
+  <div className="relative">
+    <Lock className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-500" />
+    <input 
+      type={showPassword ? "text" : "password"} 
+      value={password}
+      onChange={(e) => setPassword(e.target.value)}
+      className="w-full bg-black/40 border border-white/10 rounded-xl py-3 pl-12 pr-12 text-white focus:border-brand-purple transition outline-none"
+      placeholder="••••••••"
+      required
+    />
+    <button
+      type="button"
+      onClick={() => setShowPassword(!showPassword)}
+      className="absolute right-4 top-1/2 -translate-y-1/2 text-slate-500 hover:text-white transition focus:outline-none"
+    >
+      {showPassword ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
+    </button>
+  </div>
+</div>
 
             {error && <p className="text-red-400 text-xs mt-2 text-center">{error}</p>}
 
@@ -124,13 +132,14 @@ const LoginPage: React.FC<LoginPageProps> = ({ onLogin, onBackToLanding }) => {
 
           <p className="text-center mt-8 text-sm text-slate-500">
             {isSignUp ? 'Already have an account?' : "Don't have an access key?"}{' '}
-            <button 
-              onClick={() => setIsSignUp(!isSignUp)}
-              className="text-brand-purple font-bold hover:text-white transition"
-            >
-              {isSignUp ? 'Login' : 'Sign Up'}
-            </button>
-          </p>
+     <button
+      type="button"
+      onClick={() => onBackToLanding()} // This sends them back to the landing page
+      className="text-brand-purple font-bold hover:text-brand-gold transition"
+     >
+      {isSignUp ? 'Login' : 'Get Started'}
+        </button>
+    </p>
         </div>
       </div>
     </div>
