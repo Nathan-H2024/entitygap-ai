@@ -131,15 +131,15 @@ const LoginPage: React.FC<LoginPageProps> = ({ onLogin, onBackToLanding }) => {
           </button>
 
           <p className="text-center mt-8 text-sm text-slate-500">
-            {isSignUp ? 'Already have an account?' : "Don't have an access key?"}{' '}
-     <button
-      type="button"
-      onClick={() => onBackToLanding()} // This sends them back to the landing page
-      className="text-brand-purple font-bold hover:text-brand-gold transition"
-     >
-      {isSignUp ? 'Login' : 'Get Started'}
-        </button>
-    </p>
+  {isSignUp ? 'Already have an account?' : "Don't have an access key?"}{' '}
+  <button
+    type="button"
+    onClick={() => setIsSignUp(!isSignUp)} // Switches between Login and Sign-Up state
+    className="text-brand-purple font-bold hover:text-brand-gold transition"
+  >
+    {isSignUp ? 'Login' : 'Sign Up'}
+  </button>
+</p>
         </div>
       </div>
     </div>
