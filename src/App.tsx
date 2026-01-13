@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
-import LandingPage from './LandingPage';
+import LandingPage from './components/LandingPage';
 import LoginPage from './components/LoginPage';
 import OnboardingPage from './OnboardingPage';
-import Dashboard from './app/Dashboard';
+import Dashboard from './app/Dashboard'; 
 import { auth } from './services/firebase';
 import { doc, setDoc } from 'firebase/firestore';
 import { db } from './services/firebase';
