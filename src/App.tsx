@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import LandingPage from './LandingPage';
-import LoginPage from './LoginPage';
+import LoginPage from '../LoginPage';
 import OnboardingPage from './OnboardingPage';
 import Dashboard from './app/Dashboard';
 import { auth } from './services/firebase';
