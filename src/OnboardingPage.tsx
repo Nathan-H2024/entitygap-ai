@@ -1,13 +1,13 @@
 import React, { useState } from 'react';
-import { ArrowLeft, Info, CheckCircle2 } from 'lucide-react';
+import { ArrowLeft, Info, Zap } from 'lucide-react';
 
 interface OnboardingPageProps {
   onBack: () => void;
+  onSelectFree: () => void; // New prop to handle free signup
 }
 
-const OnboardingPage: React.FC<OnboardingPageProps> = ({ onBack }) => {
+const OnboardingPage: React.FC<OnboardingPageProps> = ({ onBack, onSelectFree }) => {
   const [agreed, setAgreed] = useState(false);
-  const [showFeatures, setShowFeatures] = useState(false);
 
   return (
     <div className="min-h-screen bg-[#0a0a0a] text-white py-12 px-6">
@@ -16,68 +16,55 @@ const OnboardingPage: React.FC<OnboardingPageProps> = ({ onBack }) => {
           <ArrowLeft className="w-4 h-4" /> Back to Landing
         </button>
 
-        <h2 className="text-4xl font-black mb-4 tracking-tighter">Initialize Your Credentials</h2>
-        <p className="text-slate-400 mb-8 leading-relaxed">
-          To access the GapScan™ Engine, you must select an operational tier and agree to the data auditing protocols.
-        </p>
+        <h2 className="text-4xl font-black mb-8 tracking-tighter text-center">Select Your Operational Tier</h2>
 
-        {/* Disclaimers */}
-        <div className="bg-white/5 border border-white/10 rounded-2xl p-6 mb-12">
-          <h3 className="text-sm font-bold uppercase text-slate-500 mb-4 tracking-widest">Protocol Agreement</h3>
-          <div className="space-y-4 text-sm text-slate-400">
-            <p>1. I understand that AI analysis is probabilistic and should be cross-referenced.</p>
-            <p>2. I agree to the privacy policy regarding the storage of scan histories.</p>
+        {/* The Daily Alpha (Free) Card */}
+        <div className={`mb-12 p-8 rounded-3xl border transition-all ${agreed ? 'bg-white/5 border-white/10 hover:border-brand-purple/50' : 'bg-white/5 border-white/5 opacity-50 pointer-events-none'}`}>
+          <div className="flex justify-between items-start mb-4">
+            <div>
+              <h3 className="text-2xl font-bold text-white">Daily Alpha</h3>
+              <p className="text-slate-400 text-sm">Trial the engine with core data.</p>
+            </div>
+            <span className="px-3 py-1 bg-brand-purple/20 text-brand-purple text-xs font-bold rounded-full uppercase">Free Entry</span>
           </div>
-          <label className="flex items-center gap-3 mt-6 cursor-pointer group">
+          <ul className="space-y-3 mb-8">
+            <li className="text-sm text-slate-300 flex items-center gap-2">✓ 5 Basic Scans Per Day</li>
+            <li className="text-sm text-slate-300 flex items-center gap-2">✓ Trend Identification</li>
+            <li className="text-sm text-slate-300 flex items-center gap-2">✓ Community Data Feed</li>
+          </ul>
+          <button 
+            onClick={onSelectFree}
+            className="w-full py-4 bg-white/10 hover:bg-white/20 text-white font-bold rounded-xl transition-all"
+          >
+            Start with Daily Alpha
+          </button>
+        </div>
+
+        <div className="relative py-8">
+          <div className="absolute inset-0 flex items-center"><div className="w-full border-t border-white/5"></div></div>
+          <div className="relative flex justify-center text-xs uppercase font-bold text-slate-600 bg-[#0a0a0a] px-4">OR UPGRADE FOR FULL POWER</div>
+        </div>
+
+        {/* Protocol Agreement Checkbox */}
+        <div className="bg-white/5 border border-white/10 rounded-2xl p-6 mb-12 mt-8">
+          <label className="flex items-center gap-3 cursor-pointer group">
             <input 
               type="checkbox" 
               checked={agreed} 
               onChange={() => setAgreed(!agreed)}
               className="w-5 h-5 rounded border-white/20 bg-black/40 text-brand-purple focus:ring-brand-purple"
             />
-            <span className="text-sm font-medium group-hover:text-white transition-colors">I accept the terms and operational disclaimers.</span>
+            <span className="text-sm font-medium group-hover:text-white transition-colors">I accept the terms and operational disclaimers to unlock all tiers.</span>
           </label>
         </div>
 
-        {/* Feature Pop-up Trigger */}
-        <button 
-          onClick={() => setShowFeatures(true)}
-          className="flex items-center gap-2 text-brand-gold text-sm font-bold mb-8 hover:underline"
-        >
-          <Info className="w-4 h-4" /> View Detailed Tier Comparisons
-        </button>
-
-        {/* Stripe Pricing Table - Only active if agreed */}
+        {/* Premium Tiers (Stripe) */}
         <div className={agreed ? "opacity-100 transition-opacity" : "opacity-30 pointer-events-none transition-opacity"}>
           <stripe-pricing-table 
             pricing-table-id="prctbl_1SovtlDFnQqtDdboAJl5fWDf"
             publishable-key="pk_live_51QSfBBDFnQqtDdboD4o6sWj0J1ZpbBHqGZMacOmShhjscUTDJdj7GEcEJO2dBJ2159xonmDUdH0hxtOODT7lSapS00i5VMQooP"
           />
         </div>
-
-        {/* Feature Modal */}
-        {showFeatures && (
-          <div className="fixed inset-0 z-50 flex items-center justify-center p-6 bg-black/80 backdrop-blur-sm">
-            <div className="bg-[#111] border border-white/10 p-8 rounded-3xl max-w-2xl w-full shadow-2xl relative">
-              <button onClick={() => setShowFeatures(false)} className="absolute top-6 right-6 text-slate-500 hover:text-white">✕</button>
-              <h3 className="text-2xl font-bold mb-6">Tier Capabilities</h3>
-              <div className="grid md:grid-cols-3 gap-6">
-                <div className="space-y-3">
-                  <h4 className="text-brand-purple font-bold">Scout</h4>
-                  <p className="text-xs text-slate-500">Trend Identification, Basic Saturation Checks.</p>
-                </div>
-                <div className="space-y-3">
-                  <h4 className="text-brand-gold font-bold">Architect</h4>
-                  <p className="text-xs text-slate-500">Niche Pollination, Velocity Tracking, 100 Monthly Scans.</p>
-                </div>
-                <div className="space-y-3">
-                  <h4 className="text-blue-500 font-bold">Authority</h4>
-                  <p className="text-xs text-slate-500">Unlimited Scans, Priority AI Engine, Full Strategic Blueprints.</p>
-                </div>
-              </div>
-            </div>
-          </div>
-        )}
       </div>
     </div>
   );

@@ -2,36 +2,42 @@ import React, { useState } from 'react';
 import LandingPage from './LandingPage';
 import LoginPage from './LoginPage';
 import OnboardingPage from './OnboardingPage';
-import Dashboard from './app/Dashboard'; // Adjust path if needed
+import Dashboard from './app/Dashboard';
 import { auth } from './services/firebase';
+import { doc, setDoc } from 'firebase/firestore';
+import { db } from './services/firebase';
 
 const App: React.FC = () => {
   const [currentPage, setCurrentPage] = useState<'landing' | 'login' | 'onboarding' | 'dashboard'>('landing');
-
-  // Handle Auth State
   const [user, setUser] = useState(auth.currentUser);
+
   auth.onAuthStateChanged((u) => setUser(u));
 
-  if (user && currentPage !== 'dashboard') {
-    return <Dashboard />;
-  }
+  // Logic to handle Daily Alpha (Free) Selection
+  const handleFreeSignup = async () => {
+    if (user) {
+      await setDoc(doc(db, 'users', user.uid), {
+        subscriptionTier: 'FREE',
+        setupComplete: true
+      }, { merge: true });
+      setCurrentPage('dashboard');
+    } else {
+      setCurrentPage('login'); // Send to login if they aren't authenticated yet
+    }
+  };
+
+  if (user && currentPage === 'landing') setCurrentPage('dashboard');
 
   return (
     <>
       {currentPage === 'landing' && (
-        <LandingPage 
-          onStart={() => setCurrentPage('onboarding')} 
-          onLoginClick={() => setCurrentPage('login')} 
-        />
+        <LandingPage onStart={() => setCurrentPage('onboarding')} onLoginClick={() => setCurrentPage('login')} />
       )}
       {currentPage === 'onboarding' && (
-        <OnboardingPage onBack={() => setCurrentPage('landing')} />
+        <OnboardingPage onBack={() => setCurrentPage('landing')} onSelectFree={handleFreeSignup} />
       )}
       {currentPage === 'login' && (
-        <LoginPage 
-          onLogin={() => setCurrentPage('dashboard')} 
-          onBackToLanding={() => setCurrentPage('landing')} 
-        />
+        <LoginPage onLogin={() => setCurrentPage('dashboard')} onBackToLanding={() => setCurrentPage('landing')} />
       )}
       {currentPage === 'dashboard' && <Dashboard />}
     </>
