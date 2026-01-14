@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import LandingPage from './LandingPage';
 import LoginPage from './LoginPage';
 import OnboardingPage from './OnboardingPage';
-import AdminDashboard from '../AdminDashboard'; // Pointing to the root file you found
+import DashboardPage from './app/dashboard/page'; // Correct path to the file in SS1
 import { auth } from './services/firebase';
 import { doc, setDoc } from 'firebase/firestore';
 import { db } from './services/firebase';
@@ -50,7 +50,7 @@ const App: React.FC = () => {
           onBackToLanding={() => setCurrentPage('landing')} 
         />
       )}
-      {currentPage === 'dashboard' && <AdminDashboard />}
+      {currentPage === 'dashboard' && <DashboardPage />}
     </>
   );
 };
