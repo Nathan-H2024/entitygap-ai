@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import LandingPage from './LandingPage';
 import LoginPage from './LoginPage';
 import OnboardingPage from './OnboardingPage';
-import Dashboard from './app/Dashboard'; 
+import AdminDashboard from '../AdminDashboard'; // Pointing to the root file you found
 import { auth } from './services/firebase';
 import { doc, setDoc } from 'firebase/firestore';
 import { db } from './services/firebase';
@@ -13,7 +13,6 @@ const App: React.FC = () => {
 
   auth.onAuthStateChanged((u) => setUser(u));
 
-  // Logic to handle Daily Alpha (Free) Selection
   const handleFreeSignup = async () => {
     if (user) {
       await setDoc(doc(db, 'users', user.uid), {
@@ -22,24 +21,36 @@ const App: React.FC = () => {
       }, { merge: true });
       setCurrentPage('dashboard');
     } else {
-      setCurrentPage('login'); // Send to login if they aren't authenticated yet
+      setCurrentPage('login');
     }
   };
 
-  if (user && currentPage === 'landing') setCurrentPage('dashboard');
+  // Skip landing if already logged in
+  if (user && currentPage === 'landing') {
+    setCurrentPage('dashboard');
+  }
 
   return (
     <>
       {currentPage === 'landing' && (
-        <LandingPage onStart={() => setCurrentPage('onboarding')} onLoginClick={() => setCurrentPage('login')} />
+        <LandingPage 
+          onStart={() => setCurrentPage('onboarding')} 
+          onLoginClick={() => setCurrentPage('login')} 
+        />
       )}
       {currentPage === 'onboarding' && (
-        <OnboardingPage onBack={() => setCurrentPage('landing')} onSelectFree={handleFreeSignup} />
+        <OnboardingPage 
+          onBack={() => setCurrentPage('landing')} 
+          onSelectFree={handleFreeSignup} 
+        />
       )}
       {currentPage === 'login' && (
-        <LoginPage onLogin={() => setCurrentPage('dashboard')} onBackToLanding={() => setCurrentPage('landing')} />
+        <LoginPage 
+          onLogin={() => setCurrentPage('dashboard')} 
+          onBackToLanding={() => setCurrentPage('landing')} 
+        />
       )}
-      {currentPage === 'dashboard' && <Dashboard />}
+      {currentPage === 'dashboard' && <AdminDashboard />}
     </>
   );
 };
