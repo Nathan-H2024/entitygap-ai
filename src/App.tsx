@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import LandingPage from './LandingPage';
 import LoginPage from './LoginPage';
 import OnboardingPage from './OnboardingPage';
-import DashboardPage from './app/dashboard/page'; // Correct path to the file in SS1
+import DashboardPage from '../app/dashboard/page'; // Points to the code you just pasted
 import { auth } from './services/firebase';
 import { doc, setDoc } from 'firebase/firestore';
 import { db } from './services/firebase';
@@ -25,7 +25,7 @@ const App: React.FC = () => {
     }
   };
 
-  // Skip landing if already logged in
+  // Automated Skip for Logged-In Users
   if (user && currentPage === 'landing') {
     setCurrentPage('dashboard');
   }
