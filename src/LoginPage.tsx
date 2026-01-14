@@ -123,12 +123,12 @@ const LoginPage: React.FC<LoginPageProps> = ({ onLogin, onBackToLanding }) => {
           </div>
 
           <button 
-            onClick={handleGoogleLogin}
-            className="w-full py-3 bg-white/5 hover:bg-white/10 border border-white/10 text-white rounded-xl flex items-center justify-center transition font-bold"
-          >
-            <Chrome className="w-5 h-5 mr-3 text-brand-purple" />
-            Google Workspace
-          </button>
+  onClick={handleGoogleLogin}
+  className="w-full py-3 bg-white text-black font-bold rounded-lg flex items-center justify-center space-x-2 hover:bg-slate-100 transition"
+>
+            <img src="/google-icon.svg" className="w-5 h-5" alt="Google" />
+            <span>Sign in with Google</span>
+        </button>
 
           <p className="text-center mt-8 text-sm text-slate-500">
   {isSignUp ? 'Already have an account?' : "Don't have an access key?"}{' '}

@@ -45,18 +45,32 @@ const OnboardingPage: React.FC<OnboardingPageProps> = ({ onBack, onSelectFree })
           <div className="relative flex justify-center text-xs uppercase font-bold text-slate-600 bg-[#0a0a0a] px-4">OR UPGRADE FOR FULL POWER</div>
         </div>
 
-        {/* Protocol Agreement Checkbox */}
-        <div className="bg-white/5 border border-white/10 rounded-2xl p-6 mb-12 mt-8">
-          <label className="flex items-center gap-3 cursor-pointer group">
-            <input 
-              type="checkbox" 
-              checked={agreed} 
-              onChange={() => setAgreed(!agreed)}
-              className="w-5 h-5 rounded border-white/20 bg-black/40 text-brand-purple focus:ring-brand-purple"
-            />
-            <span className="text-sm font-medium group-hover:text-white transition-colors">I accept the terms and operational disclaimers to unlock all tiers.</span>
-          </label>
-        </div>
+        {/* Protocol Agreement & Terms Viewer */}
+<div className="mt-8 mb-12 max-w-2xl mx-auto">
+  <div className="bg-slate-900/50 border border-slate-800 rounded-t-xl p-4">
+    <h3 className="text-white font-bold text-sm mb-2 uppercase tracking-widest">Operational Disclaimers & Terms</h3>
+    <div className="h-48 overflow-y-auto text-[11px] leading-relaxed text-slate-400 space-y-4 pr-4 custom-scrollbar bg-black/20 p-3 rounded border border-white/5">
+      <p><strong>1. PROPRIETARY DATA NOTICE:</strong> EntityGap AI provides trend analysis derived from proprietary "Gap Identification" protocols. No financial advice is implied.</p>
+      <p><strong>2. USAGE LIMITS:</strong> Daily Alpha users are granted 5 basic scans per 24-hour cycle. Any attempt to bypass this via automation or session manipulation results in a permanent UID ban.</p>
+      <p><strong>3. DATA ACCURACY:</strong> While the GAPSCAN™ Engine v3.1 utilizes advanced verification gates, users acknowledge that real-time market saturation can occur between scan intervals.</p>
+      <p><strong>4. LIABILITY WAIVER:</strong> By engaging the "Start" sequence, the operator accepts full responsibility for all market positioning based on engine outputs.</p>
+      {/* Paste your full legal Terms and Conditions text here */}
+    </div>
+  </div>
+
+  <div className="bg-white/5 border-x border-b border-white/10 rounded-b-xl p-4 flex items-center space-x-3">
+    <input 
+      type="checkbox" 
+      id="terms" 
+      checked={agreed}
+      onChange={() => setAgreed(!agreed)}
+      className="w-5 h-5 rounded border-slate-700 bg-black text-brand-purple focus:ring-brand-purple"
+    />
+    <label htmlFor="terms" className="text-sm text-slate-300 cursor-pointer select-none">
+      I have read and accept the terms and operational disclaimers to unlock all tiers.
+    </label>
+  </div>
+</div>
 
         {/* Premium Tiers (Stripe) */}
         <div className={agreed ? "opacity-100 transition-opacity" : "opacity-30 pointer-events-none transition-opacity"}>
