@@ -3,7 +3,7 @@ import LandingPage from './LandingPage';
 import LoginPage from './LoginPage';
 import OnboardingPage from './OnboardingPage';
 import DashboardPage from './app/dashboard/page'; 
-import { auth, db } from './services/firebase'; // Removed /src/ because services is at root
+import { auth, db } from './services/firebase'; // Ensure this matches your SS2 move
 import { doc, setDoc } from 'firebase/firestore';
 
 const App: React.FC = () => {
