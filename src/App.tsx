@@ -2,10 +2,9 @@ import React, { useState } from 'react';
 import LandingPage from './LandingPage';
 import LoginPage from './LoginPage';
 import OnboardingPage from './OnboardingPage';
-import DashboardPage from '../app/dashboard/page'; // Up and into root/app
-import { auth } from './services/firebase';      // Up and into root/services
+import DashboardPage from './app/dashboard/page'; 
+import { auth, db } from './services/firebase'; // Removed /src/ because services is at root
 import { doc, setDoc } from 'firebase/firestore';
-import { db } from './services/firebase';        // Up and into root/services
 
 const App: React.FC = () => {
   const [currentPage, setCurrentPage] = useState<'landing' | 'login' | 'onboarding' | 'dashboard'>('landing');
