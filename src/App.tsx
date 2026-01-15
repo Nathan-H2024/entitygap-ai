@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import LandingPage from './LandingPage';
 import LoginPage from './LoginPage';
 import OnboardingPage from './OnboardingPage';
-import DashboardPage from '../app/dashboard/page'; 
+import DashboardPage from './app/dashboard/page'; 
 import { auth } from './services/firebase'; // Ensure this matches your SS2 move
 import { doc, setDoc } from 'firebase/firestore';
 import { db } from './services/firebase';
