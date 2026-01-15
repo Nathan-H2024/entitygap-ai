@@ -3,9 +3,9 @@ import LandingPage from './LandingPage';
 import LoginPage from './LoginPage';
 import OnboardingPage from './OnboardingPage';
 import DashboardPage from '../app/dashboard/page'; // Up and into root/app
-import { auth } from '../services/firebase';      // Up and into root/services
+import { auth } from './services/firebase';      // Up and into root/services
 import { doc, setDoc } from 'firebase/firestore';
-import { db } from '../services/firebase';        // Up and into root/services
+import { db } from './services/firebase';        // Up and into root/services
 
 const App: React.FC = () => {
   const [currentPage, setCurrentPage] = useState<'landing' | 'login' | 'onboarding' | 'dashboard'>('landing');
