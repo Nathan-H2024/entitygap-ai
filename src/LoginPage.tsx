@@ -33,17 +33,27 @@ const LoginPage: React.FC<LoginPageProps> = ({ onLogin, onBackToLanding }) => {
     }
   };
 
-  const handleGoogleLogin = async () => {
+const handleGoogleLogin = async () => {
   const provider = new GoogleAuthProvider();
   try {
-    // Switch from Redirect to Popup for App Hosting reliability
-    await signInWithPopup(auth, provider);
-    onLogin(); // Takes you to the dashboard upon success
+    // 1. Trigger the popup
+    const result = await signInWithPopup(auth, provider);
+    
+    // 2. If we get a user back, proceed to dashboard
+    if (result.user) {
+      console.log("Authenticated successfully:", result.user.email);
+      onLogin(); 
+    }
   } catch (error: any) {
-    console.error("Login failed:", error.message);
-    alert("Authentication Blocked: Please ensure you've allowed the Identity Toolkit API in Google Cloud.");
+    console.error("Login failed:", error.code, error.message);
+    if (error.code === 'auth/popup-blocked') {
+      alert("Please enable popups in your browser to sign in with Google.");
+    } else {
+      alert("Auth Error: " + error.message);
+    }
   }
 };
+  
 
   return (
     <div className="min-h-screen bg-brand-dark flex flex-col items-center justify-center px-6 relative overflow-hidden">
