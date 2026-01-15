@@ -3,8 +3,9 @@ import LandingPage from './LandingPage';
 import LoginPage from './LoginPage';
 import OnboardingPage from './OnboardingPage';
 import DashboardPage from './app/dashboard/page'; 
-import { auth, db } from './services/firebase'; // Ensure this matches your SS2 move
+import { auth } from './services/firebase'; // Ensure this matches your SS2 move
 import { doc, setDoc } from 'firebase/firestore';
+import { db } from './services/firebase';
 
 const App: React.FC = () => {
   const [currentPage, setCurrentPage] = useState<'landing' | 'login' | 'onboarding' | 'dashboard'>('landing');
