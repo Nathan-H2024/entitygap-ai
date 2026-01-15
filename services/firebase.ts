@@ -8,12 +8,12 @@ const apiKey = import.meta.env.VITE_GAP_API_KEY;
 const appId = import.meta.env.VITE_GAP_APP_ID;
 
 const firebaseConfig = {
-  apiKey: apiKey,
+  apiKey: :AIzaSyDqUgFoTVuGuyJemYWhg2xGnojNBP82qyY",
   authDomain: "entitygap-ai.firebaseapp.com",
   projectId: "entitygap-ai",
   storageBucket: "entitygap-ai.appspot.com",
   messagingSenderId: "592829622852",
-  appId: appId,
+  appId: "1:592829622852:web:b9b222ed1cb8c6516c2a11",
   measurementId: "G-X8BERZNVLY"
 };
 
@@ -21,8 +21,8 @@ const firebaseConfig = {
 console.log("Firebase App Initializing...");
 
 const app = initializeApp(firebaseConfig);
-const db = getFirestore(app);
-const auth = getAuth(app);
+export const auth = getAuth(app);
+export const db = getFirestore(app);
 
 let analytics: Analytics | undefined = undefined;
 if (typeof window !== "undefined") {
