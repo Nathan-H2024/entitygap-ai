@@ -25,4 +25,7 @@
     "postcss": "latest",
     "tailwindcss": "latest"
   }
+    "engines": {
+    "node": ">=18.0.0"
+  }
 }
