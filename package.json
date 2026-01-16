@@ -24,8 +24,8 @@
     "@types/react-dom": "latest",
     "postcss": "latest",
     "tailwindcss": "latest"
-  }
-    "engines": {
+  },
+  "engines": {
     "node": ">=18.0.0"
   }
 }
